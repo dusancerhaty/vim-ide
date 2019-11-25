@@ -814,9 +814,11 @@ vmap r <Plug>(expand_region_shrink)
 " ========================================================================================
 " VIM-airline  plugin 
 " https://github.com/bling/vim-airline   
+let g:airline_theme="laederon"
 let g:airline#extensions#tabline#enabled = 1 
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|' 
+let g:airline_powerline_fonts=1
 
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['mode'])
@@ -1122,3 +1124,7 @@ nmap <C-]> g<C-]>
 " ======================================================================================== 
 " rainbow levels toggle
 nmap <leader>rlt :RainbowLevelsToggle<cr>
+
+" ======================================================================================== 
+" gitgutter
+set signcolumn=yes
