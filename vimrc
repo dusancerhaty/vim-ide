@@ -915,9 +915,9 @@ let g:yankring_replace_n_pkey = '<leader>yp'
 " vimdiff options
 " Always use vertical diffs 
 set diffopt+=vertical
-if &diff 
-    colorscheme badwolf_diff
-endif
+"if &diff 
+"    colorscheme badwolf_diff
+"endif
 
 " ========================================================================================
 " ack and silversearcher-ag 
