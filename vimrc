@@ -13,13 +13,17 @@ syntax on
 " Make vim incompatbile to vi.
 set nocompatible
 set modelines=0
+imap <ESC>oA <ESC>ki
+imap <ESC>oB <ESC>ji
+imap <ESC>oC <ESC>li
+imap <ESC>oD <ESC>hi
 
 " ========================================================================================
 "TAB settings.
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
-set expandtab
+set noexpandtab
 set showtabline=2
 set ruler
 
@@ -57,6 +61,7 @@ set undodir=/tmp
 set shell=/bin/bash
 set lazyredraw
 set matchtime=3
+set vb
 
 " ========================================================================================
 "Changing Leader Key
@@ -217,7 +222,17 @@ if has("gui_running")
     colo badwolf
     set listchars=tab:▸\ ,eol:¬         " Invisibles using the Textmate style
 else
-    set t_Co=256
+		if $TERM =~ '^rxvt-256'
+			set t_Co=256
+		elseif $TERM =~ '^rxvt-unicode-256'
+			set t_Co=256
+		elseif $TERM =~ '^screen-256'
+			set t_Co=256
+		elseif $TERM =~ '^xterm'
+			set t_Co=256
+		else
+			set t_Co=8
+		endif
     colorschem badwolf
 endif
 
@@ -402,7 +417,7 @@ set laststatus=2
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 
 set nowrap
-set expandtab
+set noexpandtab
 
 "==========================================================================="
 " Edit .vimrc file
