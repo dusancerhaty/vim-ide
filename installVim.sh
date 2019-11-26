@@ -36,10 +36,10 @@ echo -e "Installing cscope"
 sudo apt-get --yes install cscope
 
 echo -e "Installing pip for python-based dpeendencies"
-sudo apt-get --yes install pip
+sudo apt-get --yes install python-pip
 
 echo -e "Installing python dependencies"
-sudo pip install pdb pylint
+sudo -H pip install pdbpp pylint
 
 echo -e "Initializing and checking out plugins submodules: "
 
