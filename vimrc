@@ -1142,4 +1142,6 @@ nmap <leader>rlt :RainbowLevelsToggle<cr>
 
 " ======================================================================================== 
 " gitgutter
-set signcolumn=yes
+if v:version >= 800
+	set signcolumn=yes
+endif
