@@ -1145,3 +1145,7 @@ nmap <leader>rlt :RainbowLevelsToggle<cr>
 if v:version >= 800
 	set signcolumn=yes
 endif
+
+" ======================================================================================== 
+" highlight words under the cursor
+autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
