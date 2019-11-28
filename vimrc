@@ -495,6 +495,9 @@ function! FindCscopeProjRoot()
 		let attempts-=1
 	endwhile
 
+	if attempts == 10
+		let projRoot = "."
+	endif
 	if attempts == 0
 		let projRoot = ""
 	endif
