@@ -718,7 +718,7 @@ if v:version >= 700
     let OmniCpp_MayCompleteScope    = 1
     let OmniCpp_DefaultNamespaces   = ['std','_GLIBCXX_STD']
 
-    set completeopt=menuone,menu,longest,preview
+    set completeopt=menuone,menu,longest
 endif
 
 "===================================================================================================
