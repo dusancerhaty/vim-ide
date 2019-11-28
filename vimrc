@@ -502,6 +502,10 @@ function! FindCscopeProjRoot()
 		let projRoot = ""
 	endif
 
+	if projRoot != ""
+		let projRoot = fnamemodify(projRoot, ":p")
+	endif
+
 	return projRoot
 
 endfunction
