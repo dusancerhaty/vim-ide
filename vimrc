@@ -630,8 +630,8 @@ nmap <leader>uad :call UpdateAllCscopeDatabases()<cr>:w<cr>
 imap <leader>uad <ESC>l:call UpdateAllCscopeDatabases()<cr>:w<cr>i
 
 "==========================================================================="
-set autochdir
-let NERDTreeChDirMode=2
+set noautochdir
+let NERDTreeChDirMode=0
 
 " =========== END Plugin Settings =========="
 "
