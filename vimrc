@@ -457,14 +457,14 @@ let g:CCTreeMinVisibleDepth = 1
 let g:CCTreeOrientation = "rightbelow"
 
 function! LoadCCTree()
+		let projRoot = FindCscopeProjRoot()
     let databaseDir = $HOME."/.vim/cscope_databases"
-    if IsFileAlreadyExists ( databaseDir."/last_project_cscope")
-        execute "silent :CCTreeLoadDB ".databaseDir."/last_project_cscope"
-    endif
-    let userDef = substitute(system("echo $USER"), "\n", '', '')
-    if userDef == "docker" && IsFileAlreadyExists( databaseDir."/dtv_project_cscope")
-        execute "silent :CCTreeAppendDB ".databaseDir."/dtv_project"
-    endif
+		if IsFileAlreadyExists ( projRoot."/.cscope.out")
+        execute "silent :CCTreeLoadDB ".projRoot."/.cscope.out"
+		endif
+		if IsFileAlreadyExists ( databaseDir."/cscope_global")
+        execute "silent :CCTreeLoadDB ".databaseDir."/cscope_global"
+		endif
 endfunction
 
 
@@ -481,37 +481,55 @@ let g:CCTreeKeyDepthPlus = '<C-\>='
 let g:CCTreeKeyDepthMinus = '<C-\>-'
 
 "==========================================================================="
+function! FindCscopeProjRoot()
+	let projFile = "SConsConf.xml"
+	let projRoot = ""
+	let attempts = 10
+
+	while(attempts)
+		if filereadable(projFile)
+			break
+		endif
+		let projFile = "../".projFile
+		let projRoot = "../".projRoot
+		let attempts-=1
+	endwhile
+
+	if attempts == 0
+		let projRoot = ""
+	endif
+
+	return projRoot
+
+endfunction
+
 function! LoadCScopeDatabases()
+		let projRoot = FindCscopeProjRoot()
     let databaseDir = $HOME."/.vim/cscope_databases"
-    if IsFileAlreadyExists ( databaseDir."/last_project_cscope")
-        execute ":silent cs add ".databaseDir."/last_project_cscope"  
-    endif
-    if IsFileAlreadyExists ( databaseDir."/gstreamer_cscope")
-        execute ":silent cs add ".databaseDir."/gstreamer_cscope"  
-    endif
-    if IsFileAlreadyExists ( databaseDir."/mythtv_cscope")
-        execute ":silent cs add ".databaseDir."/mythtv_cscope"  
-    endif
-    if IsFileAlreadyExists ( databaseDir."/cpp_scope")
-        execute ":silent cs add ".databaseDir."/cpp_scope"
-    endif
-    "load dtv_project only when we are working on docker 
-    let userDef = substitute(system("echo $USER"), "\n", '', '')
-    if userDef == "docker" && IsFileAlreadyExists( databaseDir."/dtv_project_cscope")
-        execute ":silent cs add ".databaseDir."/dtv_project_cscope"  
-    endif
+		if IsFileAlreadyExists ( projRoot."/.cscope.out")
+        execute ":silent cs add ".projRoot."/.cscope.out"  
+		endif
+		if IsFileAlreadyExists ( databaseDir."/cscope_global")
+        execute ":silent cs add ".databaseDir."/cscope_global"  
+		endif
     echohl StatusLine | echo "CScope databases loaded successfully..." | echohl None 
 endfunction
 
+function! UpdateCscopeFilesAndTags(basedir, targetdir)
+    let findCommand = "find `pwd` -name '*.c' -o -name '*.h' -o -name '*.java' -o -name '*.py' -o -name '*.js' -o -name '*.hpp' -o -name '*.hh' -o -name '*.cpp' -o -name '*.cc' >> ".a:targetdir."/cscope.files"
 
-function! UpdateCscopeDatabase(basedir)
+    execute ":silent !cd ".a:basedir." && ".findCommand
+
+    execute ":redraw!"
+
+endfunction
+
+function! UpdateCscopeDatabase()
     let databaseDir = $HOME."/.vim/cscope_databases"
-    let findCommand = "find `pwd` -name '*.c' -o -name '*.h' -o -name '*.java' -o -name '*.py' -o -name '*.js' -o -name '*.hpp' -o -name '*.hh' -o -name '*.cpp' -o -name '*.cc' > cscope.files"
 
-    execute ":silent !cd ".a:basedir." && ".findCommand." && cscope -b && cp cscope.out ".databaseDir."/last_project_cscope && rm cscope.files cscope.out"
+    execute ":silent !cd && cscope -b && cp cscope.out ".databaseDir."/cscope_global && rm cscope.files cscope.out"
     execute ":silent cs reset"
 
-    call UpdateTags(a:basedir)
     execute ":redraw!"
 
 endfunction
@@ -520,28 +538,32 @@ function! UpdateAllCscopeDatabases()
     let databaseDir = $HOME."/.vim/cscope_databases"
     let tagsDir = $HOME."/.vim/tags"
 
-    call UpdateCscopeDatabase("/usr/src/gstreamerInstall")
-    execute ":silent !cp ".databaseDir."/last_project_cscope ".databaseDir."/gstreamer_cscope"
-    execute ":silent !cp ".tagsDir."/last_project_tags ".tagsDir."/gstreamer_tags"
+    call UpdateCscopeFilesAndTags("/usr/include", "~")
+    call UpdateCscopeFilesAndTags("/usr/local/include", "~")
 
-    call UpdateCscopeDatabase($HOME."/projects/xmementoit/digitalTVOpenSource/mythtv")
-    execute ":silent !cp ".databaseDir."/last_project_cscope ".databaseDir."/mythtv_cscope"
-    execute ":silent !cp ".tagsDir."/last_project_tags ".tagsDir."/mythtv_tags"
+    call UpdateCscopeDatabase()
 
-    call UpdateCscopeDatabase($HOME."/.vim/tags/cpp_src")
-    execute ":silent !cp ".databaseDir."/last_project_cscope ".databaseDir."/cpp_scope"
-    execute ":silent !cp ".tagsDir."/last_project_tags ".tagsDir."/cpp_tags"
+    call UpdateTags("/usr/include", " -f ~/.vim/tags/usr_include_tags ")
+    call UpdateTags("/usr/local/include", " -f ~/.vim/tags/usr_local_include_tags ")
 
-    call UpdateCscopeDatabase("/usr/local/include")
-    execute ":silent !cp ".databaseDir."/last_project_cscope ".databaseDir."/usr_local_include_cscope"
-    execute ":silent !cp ".tagsDir."/last_project_tags ".tagsDir."/usr_local_include_tags"
-
-    call UpdateCscopeDatabase(".")
     execute ":redraw!"
 endfunction
 
-function! UpdateTags(basedir)
-    execute ":silent !cd ".a:basedir." && ctags -R --sort=yes --fields=+iaSnkt --extra=+q+f --exclude=build -f ~/.vim/tags/last_project_tags `pwd`"
+function! UpdateProjCscopeDatabase()
+		let projRoot = FindCscopeProjRoot()
+
+    call UpdateCscopeFilesAndTags(projRoot, ".")
+
+    execute ":silent !cd ".projRoot." && cscope -b && rm cscope.files && mv cscope.out .cscope.out"
+    execute ":silent cs reset"
+
+    call UpdateTags(projRoot, " -f ~/.vim/tags/last_proj_tags ")
+
+    execute ":redraw!"
+endfunction
+
+function! UpdateTags(basedir, target)
+    execute ":silent !cd ".a:basedir." && ctags -R --sort=yes --fields=+iaSnkt --extra=+q+f --exclude=build ".a:target." `pwd`"
     execute ":redraw!"
 endfunction
 
@@ -596,16 +618,13 @@ command! -nargs=1 NewCppClass call CreateCppClassFiles("<args>")
 
 "==========================================================================="
 " setting ctags 
-set tags+=~/.vim/tags/last_project_tags
-set tags+=~/.vim/tags/dtv_project_tags
-set tags+=~/.vim/tags/gstreamer_tags
-set tags+=~/.vim/tags/mythtv_tags
-set tags+=~/.vim/tags/cpp_tags
+set tags+=~/.vim/tags/usr_include_tags
 set tags+=~/.vim/tags/usr_local_include_tags
+set tags+=~/.vim/tags/last_proj_tags
 
 "==========================================================================="
-nmap <leader>ud :silent call UpdateCscopeDatabase(".")<cr>:w<cr>
-imap <leader>ud <ESC>l:silent call UpdateCscopeDatabase(".")<cr>:w<cr>i
+nmap <leader>ud :silent call UpdateProjCscopeDatabase()<cr>:w<cr>
+imap <leader>ud <ESC>l:silent call UpdateProjCscopeDatabase()<cr>:w<cr>i
 
 nmap <leader>uad :call UpdateAllCscopeDatabases()<cr>:w<cr>
 imap <leader>uad <ESC>l:call UpdateAllCscopeDatabases()<cr>:w<cr>i
