@@ -519,6 +519,9 @@ function! LoadCScopeDatabases()
 		if IsFileAlreadyExists ( databaseDir."/cscope_global")
         execute ":silent cs add ".databaseDir."/cscope_global"  
 		endif
+		if IsFileAlreadyExists ( projRoot."/tags")
+			execute "set tags+=".projRoot."/tags"
+		endif
     echohl StatusLine | echo "CScope databases loaded successfully..." | echohl None 
 endfunction
 
@@ -569,7 +572,8 @@ function! UpdateProjCscopeDatabase()
     execute ":silent !cd ".projRoot." && cscope -b && rm cscope.files && mv cscope.out .cscope.out"
     execute ":silent cs reset"
 
-    call UpdateTags(projRoot, " -f ~/.vim/tags/last_proj_tags ")
+    call UpdateTags(projRoot, "")
+		execute "set tags+=".projRoot."/tags"
 
     execute ":redraw!"
 endfunction
@@ -632,7 +636,6 @@ command! -nargs=1 NewCppClass call CreateCppClassFiles("<args>")
 " setting ctags 
 set tags+=~/.vim/tags/usr_include_tags
 set tags+=~/.vim/tags/usr_local_include_tags
-set tags+=~/.vim/tags/last_proj_tags
 
 "==========================================================================="
 nmap <leader>ud :silent call UpdateProjCscopeDatabase()<cr>:w<cr>
