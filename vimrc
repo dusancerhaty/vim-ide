@@ -552,6 +552,11 @@ endfunction
 function! UpdateProjCscopeDatabase()
 		let projRoot = FindCscopeProjRoot()
 
+		if projRoot == ""
+			" Project root was not found
+			return
+		endif
+
     call UpdateCscopeFilesAndTags(projRoot, ".")
 
     execute ":silent !cd ".projRoot." && cscope -b && rm cscope.files && mv cscope.out .cscope.out"
