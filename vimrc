@@ -387,6 +387,7 @@ nmap <leader>l <ESC>:TagbarToggle<cr>
 
 "==========================================================================="
 " Mini Buffer some settigns."
+let g:miniBufExplorerAutoStart=0
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -522,7 +523,7 @@ function! LoadCScopeDatabases()
 		if IsFileAlreadyExists ( projRoot."/tags")
 			execute "set tags+=".projRoot."/tags"
 		endif
-    echohl StatusLine | echo "CScope databases loaded successfully..." | echohl None 
+    "echohl StatusLine | echo "CScope databases loaded successfully..." | echohl None 
 endfunction
 
 function! UpdateCscopeFilesAndTags(basedir, targetdir)
@@ -935,9 +936,9 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " Trigger a highlight only when pressing f and F.
 let g:qs_highlight_on_keys = ['f', 'F']
 
-let g:qs_first_occurrence_highlight_color = 155       " terminal vim
+"let g:qs_first_occurrence_highlight_color = 155       " terminal vim
 
-let g:qs_second_occurrence_highlight_color = 81         " terminal vim
+"let g:qs_second_occurrence_highlight_color = 81         " terminal vim
 
 " =======================================================================================
 " yankring
