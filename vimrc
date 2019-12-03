@@ -668,10 +668,10 @@ autocmd VimEnter * SignatureToggleSigns
 if &diff 
     "autocmd VimEnter * NERDTree .
 else 
-    autocmd VimEnter * NERDTree .
+    "autocmd VimEnter * NERDTree .
     "autocmd VimEnter * TagbarOpen
     autocmd VimEnter * helptags ~/.vim/doc
-    autocmd VimEnter * exe 2 . "wincmd w"
+    "autocmd VimEnter * exe 2 . "wincmd w"
     autocmd VimEnter * call CheckIfMain()
     autocmd VimEnter * call LoadCScopeDatabases()
     autocmd VimEnter * call DetectFileType()
