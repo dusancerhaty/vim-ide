@@ -332,9 +332,9 @@ function! BuildAndInstallQtApp()
 endfunction
 
 function! OpenQuickFixInRightLocation() 
-    execute ":TagbarClose"
+    "execute ":TagbarClose"
     execute ":copen"
-    execute ":TagbarOpen"
+    "execute ":TagbarOpen"
     " TODO - improve me
     " go to window one above the quickfix window
     execute ":normal \<C-j>\<C-l>100\<C-j>\<C-k>"
@@ -377,8 +377,8 @@ imap <C-F5> <ESC> <C-s> :call BuildAndInstallCSharpApp()<cr>
 
 "==========================================================================="
 " Normal make 
-nmap <F9>> :set makeprg=make\ -C\ .<cr> :make --no-print-directory <cr> :TagbarClose<cr> :cw <cr> :TagbarOpen <cr>
-imap <F9> <ESC> set makeprg=make\ -C\ ./build<cr> :make --no-print-directory <cr> :TagbarClose<cr> :cw <cr> :TagbarOpen <cr>i
+nmap <F9>> :set makeprg=make\ -C\ .<cr> :make --no-print-directory <cr>
+imap <F9> <ESC> set makeprg=make\ -C\ ./build<cr> :make --no-print-directory <cr>i
 
 
 "==========================================================================="
@@ -669,7 +669,7 @@ if &diff
     "autocmd VimEnter * NERDTree .
 else 
     autocmd VimEnter * NERDTree .
-    autocmd VimEnter * TagbarOpen
+    "autocmd VimEnter * TagbarOpen
     autocmd VimEnter * helptags ~/.vim/doc
     autocmd VimEnter * exe 2 . "wincmd w"
     autocmd VimEnter * call CheckIfMain()
