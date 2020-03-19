@@ -1056,7 +1056,7 @@ let g:vim_run_command_map = {
 " " ========================================================================================
 " ctrlp configuration
 let g:ctrlp_map = '<C-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPBuffer'
 let g:ctrlp_working_path_mode = 'ra'
 " " ========================================================================================
 " ctrlp configuration
