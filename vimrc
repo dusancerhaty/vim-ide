@@ -333,11 +333,10 @@ endfunction
 
 function! OpenQuickFixInRightLocation() 
     "execute ":TagbarClose"
-    execute ":copen"
+    execute ":copen 20"
     "execute ":TagbarOpen"
-    " TODO - improve me
-    " go to window one above the quickfix window
-    execute ":normal \<C-j>\<C-l>100\<C-j>\<C-k>"
+    " open the window through whole width at the bottom
+    execute ":normal \<C-w>J"
 endfunction
 
 "==========================================================================="
@@ -1201,3 +1200,9 @@ inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>
 " it simulates <C-N><C-P> to remove the longest common text, and finally it
 " simulates <Down> again to keep a match highlighted.
 inoremap <expr> <C-S-n> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+" Open Omni complete easier
+imap <C-j> <C-X><C-O>
+
+" Redefine make prog to scons
+set makeprg=scons
