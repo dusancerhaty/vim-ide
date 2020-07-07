@@ -1206,3 +1206,7 @@ imap <C-j> <C-X><C-O>
 
 " Redefine make prog to scons
 set makeprg=scons
+
+" Get rid of 'Hit ENTER ...' message after running of command genarating
+" output.
+command! -nargs=1 Silent execute 'silent ' . <q-args> | execute 'redraw!'
