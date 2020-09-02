@@ -219,7 +219,7 @@ if has("gui_running")
     set guioptions-=L
     set guioptions+=a
     set guioptions-=m
-    colo badwolf
+    colo gruvbox
     set listchars=tab:▸\ ,eol:¬         " Invisibles using the Textmate style
 else
 		if $TERM =~ '^rxvt-256'
@@ -233,7 +233,7 @@ else
 		else
 			set t_Co=8
 		endif
-    colorschem badwolf
+    colorschem gruvbox
 endif
 
 " ========== END Gvim Settings ==========
@@ -877,7 +877,7 @@ autocmd VimEnter * call AirlineInit()
 
   let g:airline_theme_patch_func = 'AirlineThemePatch'
   function! AirlineThemePatch(palette)
-    if g:airline_theme == 'badwolf'
+    if g:airline_theme == 'gruvbox'
       for colors in values(a:palette.inactive)
         let colors[3] = 245
       endfor
@@ -949,9 +949,9 @@ let g:yankring_replace_n_pkey = '<leader>yp'
 " vimdiff options
 " Always use vertical diffs 
 set diffopt+=vertical
-"if &diff 
-"    colorscheme badwolf_diff
-"endif
+if &diff
+    colorscheme gruvbox
+endif
 
 " ========================================================================================
 " ack and silversearcher-ag 
