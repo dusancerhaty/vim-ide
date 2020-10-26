@@ -89,7 +89,7 @@ if has("cscope")
     " go back to where you were before the search.  
     "
 
-    nmap <C-\>s :set splitbelow<cr>:scs find s <C-R>=expand("<cword>")<CR><CR><leader>co<cr>k:set nosplitbelow<cr>
+    nmap <C-\>s :scs find s <C-R>=expand("<cword>")<CR><CR><leader>co<cr>ZZ<leader>co
     nmap <C-\>g :set splitbelow<cr>:scs find g <C-R>=expand("<cword>")<CR><CR><leader>co<cr>k:set nosplitbelow<cr>
     nmap <C-\>c :set splitbelow<cr>:scs find c <C-R>=expand("<cword>")<CR><CR><leader>co<cr>k:set nosplitbelow<cr>
     nmap <C-\>t :set splitbelow<cr>:scs find t <C-R>=expand("<cword>")<CR><CR><leader>co<cr>k:set nosplitbelow<cr>
