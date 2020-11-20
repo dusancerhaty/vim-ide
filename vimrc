@@ -1210,3 +1210,6 @@ set makeprg=scons
 " Get rid of 'Hit ENTER ...' message after running of command genarating
 " output.
 command! -nargs=1 Silent execute 'silent ' . <q-args> | execute 'redraw!'
+
+" Enable Termdebug
+packadd termdebug
