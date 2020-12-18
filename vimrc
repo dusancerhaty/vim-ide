@@ -1213,3 +1213,6 @@ command! -nargs=1 Silent execute 'silent ' . <q-args> | execute 'redraw!'
 
 " Enable Termdebug
 packadd termdebug
+
+" For enabling of c++ keywords matching
+autocmd FileType cpp setl iskeyword+=:,=,~,[,],*,!
