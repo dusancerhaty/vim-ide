@@ -333,7 +333,7 @@ endfunction
 
 function! OpenQuickFixInRightLocation() 
     "execute ":TagbarClose"
-    execute ":copen 20"
+    execute ":copen 10"
     "execute ":TagbarOpen"
     " open the window through whole width at the bottom
     execute ":normal \<C-w>J"
@@ -1215,4 +1215,5 @@ command! -nargs=1 Silent execute 'silent ' . <q-args> | execute 'redraw!'
 packadd termdebug
 
 " For enabling of c++ keyword matching
-autocmd FileType cpp setl iskeyword+=:,=,~,[,],*,!
+"autocmd FileType cpp setl iskeyword+=:,=,~,[,],*,!
+autocmd FileType cpp setl iskeyword+=:
