@@ -1217,3 +1217,6 @@ packadd termdebug
 " For enabling of c++ keyword matching
 "autocmd FileType cpp setl iskeyword+=:,=,~,[,],*,!
 autocmd FileType cpp setl iskeyword+=:
+
+let g:username='Dusan Cerhaty'
+let g:email='cerhaty@eset.sk'
