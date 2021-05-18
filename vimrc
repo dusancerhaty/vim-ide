@@ -20,11 +20,11 @@ imap <ESC>oD <ESC>hi
 
 " ========================================================================================
 "TAB settings.
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=8
+set shiftwidth=8
+set softtabstop=8
 set noexpandtab
-set showtabline=2
+set showtabline=8
 set ruler
 
 " ========================================================================================
@@ -111,7 +111,7 @@ nnoremap <leader>tj :tjump<cr>
 " ========================================================================================
 " Make Vim to handle long lines nicely.
 set wrap
-set textwidth=79
+set textwidth=109
 set colorcolumn=+1
 set formatoptions=qrn1
 "set colorcolumn=79
@@ -128,7 +128,7 @@ set clipboard=unnamedplus
 
 "==========================================================================="
 " Different search patterns 
-let g:cpp_pattern = "*.{cpp,c,h,hpp}"
+let g:cpp_pattern = "*.{cpp,c,cu,h,hpp}"
 let g:java_pattern = "*.{java}"
 let g:makefile_pattern = "Makefile*"
 let g:text_pattern = "*.{txt,text}"
@@ -436,7 +436,7 @@ noremap <silent> <F4> :SyntasticCheck<CR>
 noremap! <silent> <F4> <ESC>:SyntasticCheck<CR>
 
 "==========================================================================="
-au BufNewFile,BufRead *.c,*.cc,*.cpp,*.h call SetupCandCPPenviron()
+au BufNewFile,BufRead *.c,*.cc,*.cpp,*.cu,*.h call SetupCandCPPenviron()
 function! SetupCandCPPenviron()
     "
     " Search path for 'gf' command (e.g. open #include-d files)
@@ -526,7 +526,7 @@ function! LoadCScopeDatabases()
 endfunction
 
 function! UpdateCscopeFilesAndTags(basedir, targetdir)
-    let findCommand = "find `pwd` -name '*.c' -o -name '*.h' -o -name '*.java' -o -name '*.py' -o -name '*.js' -o -name '*.hpp' -o -name '*.hh' -o -name '*.cpp' -o -name '*.cc' >> ".a:targetdir."/cscope.files"
+    let findCommand = "find `pwd` -name '*.c' -o -name '*.h' -o -name '*.java' -o -name '*.py' -o -name '*.js' -o -name '*.hpp' -o -name '*.hh' -o -name '*.cpp' -o -name '*.cc' -o -name '*.cu' >> ".a:targetdir."/cscope.files"
 
     execute ":silent !cd ".a:basedir." && ".findCommand
 
@@ -695,6 +695,7 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType cpp set omnifunc=omni#cpp#complete#Main
+autocmd FileType cuda set omnifunc=omni#cpp#complete#Main
 
 if v:version >= 600
     filetype plugin on
@@ -723,7 +724,7 @@ endif
 
 "===================================================================================================
 " Commenting blocks of code.
-autocmd FileType c,cppva,scala let b:comment_leader = '// '
+autocmd FileType c,cpp,cuda,scala let b:comment_leader = '// '
 autocmd FileType sh,ruby,python   let b:comment_leader = '# '
 autocmd FileType conf,fstab       let b:comment_leader = '# '
 autocmd FileType tex              let b:comment_leader = '% '
@@ -736,18 +737,19 @@ noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader
 " ========================================================================================
 " SURRENDINGS 
 
-autocmd FileType c,cpp let b:surround_105  = "if (condition) {\n \r } \n"
-autocmd FileType c,cpp let b:surround_102  = "for (int i=0; i<condition;i++) {\n\r}\n"
-autocmd FileType c,cpp let b:surround_119  = "while (condition) {\n\r}\n"
-autocmd FileType c,cpp let b:surround_112  = "printf(\"\r\\n\");"
-autocmd FileType c,cpp let b:surround_99   = "/*\n\r*/"
+autocmd FileType c,cpp,cuda let b:surround_105  = "if (condition) {\n \r } \n"
+autocmd FileType c,cpp,cuda let b:surround_102  = "for (int i=0; i<condition;i++) {\n\r}\n"
+autocmd FileType c,cpp,cuda let b:surround_119  = "while (condition) {\n\r}\n"
+autocmd FileType c,cpp,cuda let b:surround_112  = "printf(\"\r\\n\");"
+autocmd FileType c,cpp,cuda let b:surround_99   = "/*\n\r*/"
 
 autocmd FileType html  let b:surround_102  = "<font face=\"courier\">/r</font>"
 
 " ========================================================================================
 "Enable snippets for cpputest 
-autocmd FileType cpp :set filetype=cpp.cpputest
-autocmd FileType c   :set filetype=c.cpputest
+autocmd FileType cpp  :set filetype=cpp.cpputest
+autocmd FileType cuda :set filetype=cpp.cpputest
+autocmd FileType c    :set filetype=c.cpputest
 
 " ========================================================================================
 " REFRESH COMMANDS
@@ -1215,8 +1217,8 @@ command! -nargs=1 Silent execute 'silent ' . <q-args> | execute 'redraw!'
 packadd termdebug
 
 " For enabling of c++ keyword matching
-"autocmd FileType cpp setl iskeyword+=:,=,~,[,],*,!
-autocmd FileType cpp setl iskeyword+=:
+"autocmd FileType cpp,cuda setl iskeyword+=:,=,~,[,],*,!
+autocmd FileType cpp,cuda setl iskeyword+=:
 
 let g:username='Dusan Cerhaty'
 let g:email='cerhaty@eset.sk'
