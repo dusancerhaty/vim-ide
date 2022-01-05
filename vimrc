@@ -228,6 +228,8 @@ else
 			set t_Co=256
 		elseif $TERM =~ '^screen-256'
 			set t_Co=256
+		elseif $TERM =~ '^xterm-256color'
+			set t_Co=256
 		elseif $TERM =~ '^xterm'
 			set t_Co=256
 		else
