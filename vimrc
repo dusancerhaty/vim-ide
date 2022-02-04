@@ -211,6 +211,8 @@ nnoremap g; g;zz
 
 " =========== Gvim Settings =============
 
+set background=dark
+
 " Removing scrollbars
 if has("gui_running")
     set guitablabel=%-0.12t%M
